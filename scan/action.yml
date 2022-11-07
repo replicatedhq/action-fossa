@@ -1,0 +1,24 @@
+name: Replicated FOSSA scan
+description: Runs FOSSA scans in a standard fashion for Replicated repos
+inputs:
+  run-tests:
+    required: false
+    description: Run the test step
+    default: 'true'
+  api-key:
+    required: true
+    description: A FOSSA API key
+runs:
+  using: composite
+  steps:
+    - name: fossa anaylze
+      shell: bash
+      env:
+        FOSSA_API_KEY: ${{ inputs.api-key }}
+      run: fossa analyze
+    - name: fossa test
+      if: inputs.run-tests == 'true'
+      shell: bash
+      env:
+        FOSSA_API_KEY: ${{ inputs.api-key }}
+      run: fossa test
