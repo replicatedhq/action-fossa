@@ -1,0 +1,29 @@
+name: Install FOSSA CLI
+description: Installs the FOSSA CLI and makes it available in \$PATH
+inputs:
+  version:
+    description: Version to install
+    default: '3.6.0'
+  sha256sum:
+    description: The SHA256 checksum for the installer
+    default: 9bcda47aea81dc2fb1fc4d42672d7d80f1001733a5a29e2403ec6bc33ef94cc3
+runs:
+  using: composite
+  steps:
+    - name: Download archive
+      shell: bash
+      run: curl -L -o /tmp/fossa.tar.gz https://github.com/fossas/fossa-cli/releases/download/v${{ inputs.version }}/fossa_${{ inputs.version }}_linux_amd64.tar.gz
+    - name: Verify checksum
+      shell: bash
+      run: echo "${{ inputs.sha256sum }} */tmp/fossa.tar.gz" | sha256sum -c -
+    - name: Unpack archive
+      shell: bash
+      run: |
+        mkdir -p /opt/fossa/bin
+        tar -C /opt/fossa/bin -xvzf /tmp/fossa.tar.gz
+    - name: Update PATH
+      shell: bash
+      run: echo "/opt/fossa/bin" >> ${GITHUB_PATH}
+    - name: Clean up download
+      shell: bash
+      run: rm /tmp/fossa.tar.gz
