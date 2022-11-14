@@ -42,6 +42,10 @@ jobs:
 The FOSSA API key to use. Push-only tokens are not recommended.
 
 #### run-tests
-Whether or not to run the test step. Defaults to true
+Whether or not to run the test step. Defaults to true.
 
+#### diff
+Use the diff mode of `fossa test` to only check against changes to a branch. Defaults to true.
 
+#### diff-ref
+Set the branch or ref against which to diff. Defaults to `main`.

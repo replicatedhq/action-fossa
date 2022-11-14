@@ -8,6 +8,14 @@ inputs:
   api-key:
     required: true
     description: A FOSSA API key
+  diff:
+    required: false
+    description: Only report issues present in main
+    default: 'true'
+  diff-ref:
+    required: false
+    description: Ref against which to diff
+    default: 'main'
 runs:
   using: composite
   steps:
@@ -21,4 +29,4 @@ runs:
       shell: bash
       env:
         FOSSA_API_KEY: ${{ inputs.api-key }}
-      run: fossa test
+      run: fossa test ${{ inputs.diff == 'true' && '--diff ' || '' }}${{ inputs.diff == 'true' && inputs.diff-ref || '' }}
