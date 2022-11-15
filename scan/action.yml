@@ -11,7 +11,7 @@ inputs:
   diff:
     required: false
     description: Only report issues present in main
-    default: 'true'
+    default: 'false'
   diff-ref:
     required: false
     description: Ref against which to diff
