@@ -28,23 +28,15 @@ runs:
       env:
         FOSSA_API_KEY: ${{ inputs.api-key }}
       run: fossa analyze ${{ inputs.debug == 'true' && '--debug ' || '' }}
-    - name: rename debug log
-      if: inputs.debug == 'true'
-      shell: bash
-      run: mv fossa.debug.json fossa.analyze.debug.json
     - name: fossa test
       if: inputs.run-tests == 'true'
       shell: bash
       env:
         FOSSA_API_KEY: ${{ inputs.api-key }}
       run: fossa test ${{ inputs.debug == 'true' && '--debug ' || '' }}${{ inputs.diff == 'true' && '--diff ' || '' }}${{ inputs.diff == 'true' && inputs.diff-ref || '' }}
-    - name: rename debug log
-      if: inputs.debug == 'true'
-      shell: bash
-      run: mv fossa.debug.json fossa.test.debug.json
     - name: save debug log
       if: inputs.debug == 'true'
       uses: actions/upload-artifact@v3
       with:
         name: fossa-debug-log
-        path: "*.debug.json"
+        path: "*.debug.json.*"

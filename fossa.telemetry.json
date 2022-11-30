@@ -1,0 +1,45 @@
+{
+  "cliCommandArgs": [
+    "fossa",
+    "test",
+    "--debug"
+  ],
+  "cliEnvironment": "prod",
+  "cliExitedFatally": false,
+  "cliResolvedConfig": {
+    "cmdConfig": {
+      "apiOpts": {
+        "apiKey": "<REDACTED>",
+        "uri": "Nothing"
+      },
+      "baseDir": {
+        "unBaseDir": "/Users/nickm/git/github.com/replicatedhq/action-fossa/"
+      },
+      "diffRevision": null,
+      "outputFormat": "TestOutputPretty",
+      "projectRevision": {
+        "projectBranch": "main",
+        "projectName": "github.com/replicatedhq/action-fossa",
+        "projectRevision": "b659d3727cb8a5e47e8128aedb59383824f5fd67"
+      },
+      "timeout": {
+        "contents": 60,
+        "tag": "Minutes"
+      }
+    },
+    "cmdName": "test"
+  },
+  "cliStartedAt": "2022-11-30T18:58:29.739612Z",
+  "cliSystemInfo": {
+    "systemCapabilities": 10,
+    "systemInfoArch": "x86_64",
+    "systemInfoOs": "darwin",
+    "systemProcessors": 10
+  },
+  "cliTelLogs": [],
+  "cliTelemetryId": "8dc66278-6f03-4cbe-90c4-efcda7f47774",
+  "cliTimedDurations": [],
+  "cliTotalDurationInSec": 8.121399,
+  "cliUsageCounter": {},
+  "cliVersion": "v3.4.1"
+}
