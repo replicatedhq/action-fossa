@@ -10,11 +10,11 @@ jobs:
     steps:
       - if: ${{ github.event_name == 'push'}}
         uses: actions/checkout@v3
-      - if: ${{ github.event_name == 'pull_request'}}
+      - if: ${{ github.event_name == 'pull_request_target'}}
         uses: actions/checkout@v3
         with:
           ref: refs/pull/${{ github.event.number }}/merge
-      - uses: replicatedhq/action-fossa/install@v1
-      - uses: replicatedhq/action-fossa/scan@v1
+      - uses: ./install
+      - uses: ./scan@v1
         with:
           api-key: ${{ secrets.FOSSA_API_KEY }}
