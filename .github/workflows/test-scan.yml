@@ -15,6 +15,6 @@ jobs:
         with:
           ref: refs/pull/${{ github.event.number }}/merge
       - uses: ./install
-      - uses: ./scan@v1
+      - uses: ./scan
         with:
           api-key: ${{ secrets.FOSSA_API_KEY }}
