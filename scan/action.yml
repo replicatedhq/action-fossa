@@ -47,4 +47,4 @@ runs:
       uses: actions/upload-artifact@v3
       with:
         name: fossa-debug-log
-        path: *.debug.json
+        path: "*.debug.json"
