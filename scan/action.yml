@@ -35,7 +35,7 @@ runs:
         FOSSA_API_KEY: ${{ inputs.api-key }}
       run: fossa test ${{ inputs.debug == 'true' && '--debug ' || '' }}${{ inputs.diff == 'true' && '--diff ' || '' }}${{ inputs.diff == 'true' && inputs.diff-ref || '' }}
     - name: save debug log
-      if: inputs.debug == 'true'
+      if: always() && inputs.debug == 'true'
       uses: actions/upload-artifact@v3
       with:
         name: fossa-debug-log
