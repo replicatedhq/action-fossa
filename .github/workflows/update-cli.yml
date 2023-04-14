@@ -31,11 +31,11 @@ jobs:
           # update if necessary
           if [[ "$lmajor" -gt "$cmajor" || "$lminor" -gt "$cminor" || "$lpatch" -gt "$cpatch" ]]; then
             # check for an existing branch
-            if git fetcho origin "fossa-${latest}"; then
+            if git fetch origin "fossa-${latest}"; then
               echo "Branch already exists"
               exit 0
             fi
-            
+
             git checkout -b "fossa-${latest}"
 
             # update install version
