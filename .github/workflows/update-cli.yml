@@ -16,13 +16,13 @@ jobs:
           set -x
           
           # get version currently installed
-          current="$(yq 'inputs.version.default' install/action.yml)"
-          IFS=. read cmajor cminor cpatch <<< "$current"
+          current="$(yq '.inputs.version.default' install/action.yml)"
+          IFS=. read -r cmajor cminor cpatch <<< "$current"
 
           # get latest version from GitHub
           latest_obj="$(curl -s https://api.github.com/repos/fossas/fossa-cli/releases/latest)"
           latest="$(jq -r '.tag_name' <<< "${latest_obj}" | sed 's/v//g'))"
-          IFS=. read lmajor lminor lpatch <<< "$latest"
+          IFS=. read -r lmajor lminor lpatch <<< "$latest"
 
           # update if necessary
           if [[ "$lmajor" -gt "$cmajor" || "$lminor" -gt "$cminor" || "$lpatch" -gt "$cpatch" ]]; then
