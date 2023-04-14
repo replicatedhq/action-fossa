@@ -1,0 +1,58 @@
+on:
+  schedule:
+    - cron: '0 0 * * *' # every day at midnight
+  workflow_dispatch:
+  pull_request:
+
+jobs:
+  update-cli:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+            git config --local user.email "github-actions[bot]@users.noreply.github.com"
+            git config --local user.name "github-actions[bot]"
+      - run: |
+          set -x
+          
+          # get version currently installed
+          current="$(yq 'inputs.version.default' install/action.yml)"
+          IFS=. read cmajor cminor cpatch <<< "$current"
+
+          # get latest version from GitHub
+          latest_obj="$(curl -s https://api.github.com/repos/fossas/fossa-cli/releases/latest)"
+          latest="$(jq -r '.tag_name' <<< "${latest_obj}" | sed 's/v//g'))"
+          IFS=. read lmajor lminor lpatch <<< "$latest"
+
+          # update if necessary
+          if [[ "$lmajor" -gt "$cmajor" || "$lminor" -gt "$cminor" || "$lpatch" -gt "$cpatch" ]]; then
+            # check for an existing PR
+            if [[ -n "$(hub pr list -h fossa-${latest})" ]]; then
+              echo "PR already exists"
+              exit 0
+            fi
+
+            git checkout -b "fossa-${latest}"
+
+            # update install version
+            yq -i '.inputs.version.default = "'${latest}'"' install/action.yml
+
+            # update checksum
+            sha256sum="$(jq -r '.assets[] | select(.name | contains("linux_amd64.tar.gz.sha256")) | .browser_download_url' <<< ${latest_obj} | xargs curl -sSL | awk '{print $1}')"
+            yq -i '.inputs.sha256sum.default = "'${sha256sum}'"' install/action.yml
+
+            # setup git
+            git config --local user.email "github-actions[bot]@users.noreply.github.com"
+            git config --local user.name "github-actions[bot]"
+
+            # commit and push
+            git add install/action.yml
+            git commit -m "Update FOSSA CLI to ${latest}"
+            git push origin "fossa-${latest}"
+
+            # open PR
+            hub pull-request -m "Update FOSSA CLI to ${latest}"
+
+          else
+            echo "Already up to date"
+          fi
