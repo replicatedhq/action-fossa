@@ -4,6 +4,8 @@ on:
   workflow_dispatch:
   pull_request:
 
+name: Check for FOSSA CLI updates
+
 jobs:
   update-cli:
     runs-on: ubuntu-latest
@@ -29,12 +31,11 @@ jobs:
           # update if necessary
           if [[ "$lmajor" -gt "$cmajor" || "$lminor" -gt "$cminor" || "$lpatch" -gt "$cpatch" ]]; then
             # check for an existing branch
-            git fetch origin
-            if git rev-parse --verify "fossa-${latest}" >/dev/null 2>&1; then
-              echo "Branch fossa-${latest} already exists"
-              exit 1
+            if git fetcho origin "fossa-${latest}"; then
+              echo "Branch already exists"
+              exit 0
             fi
-
+            
             git checkout -b "fossa-${latest}"
 
             # update install version
