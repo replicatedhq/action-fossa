@@ -29,9 +29,10 @@ jobs:
           # update if necessary
           if [[ "$lmajor" -gt "$cmajor" || "$lminor" -gt "$cminor" || "$lpatch" -gt "$cpatch" ]]; then
             # check for an existing branch
-            if hub branch | grep -q "fossa-${latest}"; then
-              echo "Branch already exists"
-              exit 0
+            git fetch origin
+            if git rev-parse --verify "fossa-${latest}" >/dev/null 2>&1; then
+              echo "Branch fossa-${latest} already exists"
+              exit 1
             fi
 
             git checkout -b "fossa-${latest}"
@@ -53,7 +54,7 @@ jobs:
             git push origin "fossa-${latest}"
 
             # open PR
-            hub pull-request -m "Update FOSSA CLI to ${latest}" -b main
+            hub pull-request -m "Update FOSSA CLI to ${latest}"
 
           else
             echo "Already up to date"
