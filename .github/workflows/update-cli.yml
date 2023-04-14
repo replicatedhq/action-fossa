@@ -21,7 +21,7 @@ jobs:
 
           # get latest version from GitHub
           latest_obj="$(curl -s https://api.github.com/repos/fossas/fossa-cli/releases/latest)"
-          latest="$(jq -r '.tag_name' <<< "${latest_obj}" | sed 's/v//g'))"
+          latest="$(jq -r '.tag_name' <<< "${latest_obj}" | sed 's/v//g')"
           IFS=. read -r lmajor lminor lpatch <<< "$latest"
 
           # update if necessary
