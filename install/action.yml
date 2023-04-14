@@ -3,10 +3,10 @@ description: Installs the FOSSA CLI and makes it available in \$PATH
 inputs:
   version:
     description: Version to install
-    default: '3.7.4'
+    default: '3.7.5'
   sha256sum:
     description: The SHA256 checksum for the installer
-    default: 9c8e0382c7b65f083dd07136430510bb4629a2167d78bba507d8a8a5fe0cbba3
+    default: 5fcae783ed55006d6228b903cfd327d3abb8a0e7783965d7cbaee7e06395cca8
 runs:
   using: composite
   steps:
