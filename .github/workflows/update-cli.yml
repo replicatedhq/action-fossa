@@ -39,11 +39,11 @@ jobs:
             git checkout -b "fossa-${latest}"
 
             # update install version
-            yq -i '.inputs.version.default = "'${latest}'"' install/action.yml
+            yq -i '.inputs.version.default = "'"${latest}"'"' install/action.yml
 
             # update checksum
-            sha256sum="$(jq -r '.assets[] | select(.name | contains("linux_amd64.tar.gz.sha256")) | .browser_download_url' <<< ${latest_obj} | xargs curl -sSL | awk '{print $1}')"
-            yq -i '.inputs.sha256sum.default = "'${sha256sum}'"' install/action.yml
+            sha256sum="$(jq -r '.assets[] | select(.name | contains("linux_amd64.tar.gz.sha256")) | .browser_download_url' <<< "${latest_obj}" | xargs curl -sSL | awk '{print $1}')"
+            yq -i '.inputs.sha256sum.default = "'"${sha256sum}"'"' install/action.yml
 
             # setup git
             git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -55,9 +55,7 @@ jobs:
             git push origin "fossa-${latest}"
 
             # open PR
-            hub pull-request -m "Update FOSSA CLI to ${latest}"
-
+            hub pull-request -m "Update FOSSA CLI to ${latest}" -b main
           else
             echo "Already up to date"
           fi
-
