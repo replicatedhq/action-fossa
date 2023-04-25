@@ -20,6 +20,10 @@ inputs:
     required: false
     description: Enable debug logging
     default: 'true'
+  experimental-resolver:
+    required: false
+    description: Enable experimental Go resolver
+    default: 'true'
 runs:
   using: composite
   steps:
@@ -27,7 +31,7 @@ runs:
       shell: bash
       env:
         FOSSA_API_KEY: ${{ inputs.api-key }}
-      run: fossa analyze ${{ inputs.debug == 'true' && '--debug ' || '' }}
+      run: fossa analyze ${{ inputs.debug == 'true' && '--debug ' || '' }} ${{ inputs.experimental-resolver == 'true' && '--experimental-use-v3-go-resolver' || '' }}
     - name: fossa test
       if: inputs.run-tests == 'true'
       shell: bash
